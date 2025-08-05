@@ -3,7 +3,7 @@ info:
   title: Photo Rating App API
   version: 1.0.0
 paths:
-  /register:
+  /auth/register:
     post:
       summary: Register a new user
       requestBody:
@@ -34,7 +34,7 @@ paths:
                     type: string
         '500':
           description: Error
-  /login:
+  /auth/login:
     post:
       summary: Login user
       requestBody:
@@ -59,6 +59,31 @@ paths:
                     type: string
         '401':
           description: Invalid credentials
+        '500':
+          description: Error
+  /auth/reset:
+    post:
+      summary: Request password reset (email-based)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Reset link sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: User not found
         '500':
           description: Error
   /upload:

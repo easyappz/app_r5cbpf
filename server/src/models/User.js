@@ -19,6 +19,12 @@ const userSchema = new mongoose.Schema({
   },
   age: {
     type: Number
+  },
+  resetToken: {
+    type: String
+  },
+  resetTokenExpiry: {
+    type: Date
   }
 });
 
