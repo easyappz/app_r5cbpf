@@ -2,10 +2,10 @@
   "name": "simple-express-app",
   "version": "1.0.0",
   "description": "A simple Node.js Express application",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "keywords": [
     "express",

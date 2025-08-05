@@ -1,0 +1,184 @@
+openapi: 3.0.0
+info:
+  title: Photo Rating App API
+  version: 1.0.0
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                gender:
+                  type: string
+                age:
+                  type: number
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                  token:
+                    type: string
+        '500':
+          description: Error
+  /login:
+    post:
+      summary: Login user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Invalid credentials
+        '500':
+          description: Error
+  /upload:
+    post:
+      summary: Upload photo
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+      responses:
+        '201':
+          description: Photo uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid request
+        '500':
+          description: Error
+  /photos:
+    get:
+      summary: Get photos to rate with filters
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: gender
+          in: query
+          schema:
+            type: string
+        - name: minAge
+          in: query
+          schema:
+            type: number
+        - name: maxAge
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: List of photos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '500':
+          description: Error
+  /rate/{photoId}:
+    post:
+      summary: Rate a photo
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                score:
+                  type: number
+      responses:
+        '200':
+          description: Rated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid request
+        '404':
+          description: Photo not found
+        '500':
+          description: Error
+  /myphotos:
+    get:
+      summary: Get my photos with stats
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of photos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '500':
+          description: Error
+  /stats:
+    get:
+      summary: Get user stats
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User stats
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
